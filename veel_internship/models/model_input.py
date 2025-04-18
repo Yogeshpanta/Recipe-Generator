@@ -1,5 +1,5 @@
 
-from prompts.prompt_templates import SYSTEMPROMPT
+from veel_internship.prompts.prompt_templates import SYSTEMPROMPT
 # from schemas.pydantic_schema import ResponseRecipe
 # import json
 
