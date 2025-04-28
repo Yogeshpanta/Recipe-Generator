@@ -1,5 +1,3 @@
-from veel_internship.configs.logging_config import setup_logging
-
 class SYSTEMPROMPT:
     OLLAMA_PROMPT = """ You are a master chef who creates detailed recipes from user inputs. 
 
