@@ -155,8 +155,10 @@ class OllamaModel:
                     {"role": "user", "content": USERPROMPT.userprompt},
                 ],
                 format=ResponseRecipe.model_json_schema(),
-                options={"temperature": self.temp},
+                options={"temperature": self.temp, },
                 stream=stream,
+                
+                
             )
 
             return self.handle_response(response, stream)
