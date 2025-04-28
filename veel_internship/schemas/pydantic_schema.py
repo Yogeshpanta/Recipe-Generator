@@ -36,3 +36,9 @@ class ResponseRecipe(BaseModel):
 
     title: str = Field(...)
     steps: List[str] = Field(..., max_length=7, min_length=4)
+
+
+class InputModel(BaseModel):
+    """Input the model user wants"""
+
+    model_name: str = Field(..., description="Enter the model you want to use")
