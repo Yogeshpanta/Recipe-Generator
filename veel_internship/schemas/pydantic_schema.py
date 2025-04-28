@@ -28,6 +28,7 @@ class RequestRecipe(BaseModel):
         ..., min_length=5, description="select the summary of item you want to make"
     )
     ingridients: list[str] = Field(..., description="Enter the list of ingridients")
+    # model_name:str = Field(..., description="Enter the name of model you want to use")
 
 
 class ResponseRecipe(BaseModel):
