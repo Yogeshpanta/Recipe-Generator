@@ -1,4 +1,6 @@
 import ollama
+
+
 def check_ollama_model():
     """checks the installed model in system"""
     ollama_model_list = []
