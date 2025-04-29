@@ -1,19 +1,10 @@
 from fastapi import FastAPI
 from veel_internship.routes import recipe_router
+from veel_internship.configs.logging_config import setup_logging
 import logging
 import coloredlogs
 
 
-def setup_logging(level="INFO"):
-    logger = logging.getLogger()
-    coloredlogs.install(
-        level=level,
-        logger=logger,
-        fmt="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
-    )
-
-
-setup_logging()
 
 app = FastAPI(title="Recipe Generator", description="FastAPI for recipe generator")
 
