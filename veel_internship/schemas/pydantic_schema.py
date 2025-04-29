@@ -3,6 +3,8 @@ from typing import List, Literal
 import logging
 import coloredlogs
 
+from veel_internship.configs.logging_config import setup_logging
+
 
 def setup_logging(level="INFO"):
     """Set up basic colored logging."""
