@@ -1,5 +1,7 @@
 
 from fastapi import APIRouter
+from fastapi.responses import JSONResponse
+import json
 from fastapi.responses import StreamingResponse
 from veel_internship.schemas.pydantic_schema import (
     RequestRecipe,
@@ -14,40 +16,41 @@ from utils.ollama_redirect import streaming_response
 router = APIRouter(prefix="/recipes", tags=["recipes"])
 
 
+
 # @router.post("/", response_model=ResponseRecipe)
-# def recipe_generate(req: RequestRecipe, model: InputModel, stream: bool = True):
-#     ollama_model = OllamaModel(model=model.model_name, prompt=USERPROMPT, temp=0.5)
+# def recipe_generate(req: RequestRecipe, model: InputModel, stream: bool = False):
+#     """ api post using FastAPI for streaming and non streaming"""
 #     if stream:
 #         return StreamingResponse(
-#             # ollama_model.streaming(stream_choice=True), media_type="plain/text"
-#             streaming_response(), media_type="plain/text"
+#             streaming_response(model=model.model_name, prompt=USERPROMPT, temp=0.5),
+#             media_type="text/plain"
 #         )
-#         # response = StreamingResponse(streaming_response(), media_type="plain/text")
-#         # return response
-
 #     else:
-#         result = ollama_model.streaming(stream_choice=False)
-#         # Ensure result is a dict compatible with ResponseRecipe
-#         if isinstance(result, str):
-#             # If result is a string, you may need to parse it to dict
-#             import json
-
-#             result = json.loads(result)
-#         print(ResponseRecipe(**result))
+#         ollama_model = OllamaModel(model=model.model_name, prompt=USERPROMPT, temp=0.5)
+#         result = next(ollama_model.streaming(stream_choice=False))  # generator returns one result
 #         return ResponseRecipe(**result)
 
 
-# routes/rag_router.py
-
 @router.post("/", response_model=ResponseRecipe)
-def recipe_generate(req: RequestRecipe, model: InputModel, stream: bool = True):
+def recipe_generate(req: RequestRecipe, model: InputModel, stream):
     """ api post using FastAPI for streaming and non streaming"""
+
+    user_prompt = (
+        f"foodtype: {req.foodtype}\n"
+        f"summary: {req.summary}\n"
+        f"ingridients: {', '.join(req.ingridients)}"
+    )
+
     if stream:
         return StreamingResponse(
-            streaming_response(model=model.model_name, prompt=USERPROMPT, temp=0.5),
+            streaming_response(model=model.model_name,prompt=user_prompt, temp=0.5),
             media_type="text/plain"
         )
     else:
-        ollama_model = OllamaModel(model=model.model_name, prompt=USERPROMPT, temp=0.5)
+        ollama_model = OllamaModel(model=model.model_name, prompt=user_prompt, temp=0.5)
         result = next(ollama_model.streaming(stream_choice=False))  # generator returns one result
+        # response = json.loads(result)
+        # return JSONResponse(content = response)
         return ResponseRecipe(**result)
+        # return ResponseRecipe(result)
+
